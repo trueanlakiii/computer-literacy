@@ -1,11 +1,13 @@
+# подключаем необходимые для работы модули
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
-        QApplication, QWidget, 
-        QHBoxLayout, QVBoxLayout, 
-        QGroupBox, QRadioButton, QButtonGroup,  
-        QPushButton, QLabel)
-from random import shuffle
+    QApplication, QWidget, 
+    QLabel, QPushButton, 
+    QRadioButton, QGroupBox, 
+    QHBoxLayout, QVBoxLayout, QButtonGroup)
+from random import *
 
+# создаём класс объектов-вопросов
 class Question():
     def __init__(self, question, right_answer, wrong1, wrong2, wrong3):
         self.question = question
@@ -14,23 +16,46 @@ class Question():
         self.wrong2 = wrong2
         self.wrong3 = wrong3
 
-questions_list = []
-questions_list.append(Question('������ ����� ��� �� ����� ������?', '������', '�������', '�����', '�����'))
-questions_list.append(Question('� ����� ���� �������� ������?', '1147', '1417', '1092', '1344'))
-questions_list.append(Question('������������ ������ ������', '�����', '����', '����', '����'))
+q_list = []
+q_list.append(Question('За что отвечает процессор?', 'За математические вычисления и обработку команд', 'За запуск и выключение компьютера', 'За хранение информации', 'За температуру компьютера'))
+q_list.append(Question('Что такое антивирус?', 'Программа, обеспечивающая защиту от вирусов', 'Супергерой из комиксов', 'Название вакцины от коронавируса', 'Некий живой организм'))
+q_list.append(Question('Какое расширение предназначено для документов?', '.docx', '.jpg', '.avi', '.rar'))
+q_list.append(Question('Что такое дисковод?', 'Устройство для чтения CD-дисков', 'Устройство для организации дискотек', 'Устройство, ведущее диски за собой', 'Устройство в форме диска'))
+q_list.append(Question('Куда временно попадают удалённые файлы?', 'В корзину', 'На свалку', 'Они полностью удаляются с компьютера', 'В лучший мир'))
+q_list.append(Question('Какая комбинация клавиш способна скопировать выделенный текст в буфер обмена?', 'Ctrl+C', 'Ctrl+Z', 'Ctrl+V', 'Shift+Alt'))
+q_list.append(Question('Устройство вывода информации:', 'Монитор', 'Сканер', 'Клавиатура', 'Микрофон'))
+q_list.append(Question('Чем ОЗУ отличается от ПЗУ?', 'Длительностью хранения информации', 'Расположением в компьютере', 'Частотой колебаний', 'Буквой'))
+q_list.append(Question('Файлы с расширением .rar - это...', 'Архивы', 'Документы', 'Изображения', 'Таблицы'))
+q_list.append(Question('Какое расширение предназначено для музыки?', '.mp3', '.mp4', '.xlsx', '.pdf'))
+q_list.append(Question('Что из перечисленного НЕ является поисковой системой?', 'Windows', 'Google Chrome', 'Opera', 'Яндекс'))
+q_list.append(Question('Устройство ввода информации:', 'Клавиатура', 'Принтер', 'Наушники', 'Жёсткий диск'))
+q_list.append(Question('Какая из перечисленных программ является графическим редактором?', 'Paint', 'Блокнот', 'MS Word', 'MS PowerPoint'))
+q_list.append(Question('Файлы с расширением .xls - это...', 'Таблицы', 'Музыка', 'Исполняемые файлы', 'Архивы'))
+q_list.append(Question('Какая комбинация клавиш помогает быстро переключаться между открытыми программами?', 'Alt+Tab', 'Alt+F4', 'Ctrl+Z', 'Ctrl+A'))
+q_list.append(Question('Что из перечисленного НЕ является операционной системой?', 'MS Word', 'Linux', 'macOS', 'Windows'))
+q_list.append(Question('За что отвечает оперативная память?', 'За кратковременное хранение информации', 'За быстрый интернет', 'За быструю передачу данных', 'За математические вычисления и обработку команд'))
+q_list.append(Question('Какие типы файлов могут содержаться в папке?', 'Любые', 'Только документы', 'Документы, таблицы', 'Изображения и видео'))
+q_list.append(Question('Какая из перечисленных программ может создавать электронные таблицы?', 'MS Excel', 'MS Word', 'MS Access', 'MS PowerPoint'))
+q_list.append(Question('', '', '', '', ''))
 
+# оформляем макет нашего приложения
 app = QApplication([])
- 
-# ������� ������ �������
-btn_OK = QPushButton('��������')
-lb_Question = QLabel('����� ������� ������ � ����!')
- 
-RadioGroupBox = QGroupBox("�������� �������")
+win = QWidget()
+win.resize(700, 600)
+win.setWindowTitle('Компьютерная грамотность')
 
-rbtn_1 = QRadioButton('������� 1')
-rbtn_2 = QRadioButton('������� 2')
-rbtn_3 = QRadioButton('������� 3')
-rbtn_4 = QRadioButton('������� 4')
+btn = QPushButton('Ответить')
+btn.setCheckable(True)
+
+qlb = QLabel('вопрос')
+tlb = QLabel('текст')
+
+RadioGroupBox = QGroupBox("Варианты ответов")
+
+rbtn_1 = QRadioButton('Вариант 1')
+rbtn_2 = QRadioButton('Вариант 2')
+rbtn_3 = QRadioButton('Вариант 3')
+rbtn_4 = QRadioButton('Вариант 4')
 
 RadioGroup = QButtonGroup() 
 RadioGroup.addButton(rbtn_1)
@@ -38,12 +63,13 @@ RadioGroup.addButton(rbtn_2)
 RadioGroup.addButton(rbtn_3)
 RadioGroup.addButton(rbtn_4)
 
+# располагаем виджеты по наводящим линиям
 layout_ans1 = QHBoxLayout()   
 layout_ans2 = QVBoxLayout()
 layout_ans3 = QVBoxLayout()
-layout_ans2.addWidget(rbtn_1) # ��� ������ � ������ �������
+layout_ans2.addWidget(rbtn_1) # два ответа в первый столбец
 layout_ans2.addWidget(rbtn_2)
-layout_ans3.addWidget(rbtn_3) # ��� ������ �� ������ �������
+layout_ans3.addWidget(rbtn_3) # два ответа во второй столбец
 layout_ans3.addWidget(rbtn_4)
  
 layout_ans1.addLayout(layout_ans2)
@@ -51,55 +77,66 @@ layout_ans1.addLayout(layout_ans3)
  
 RadioGroupBox.setLayout(layout_ans1)
  
-# ������� ������ ����������
-AnsGroupBox = QGroupBox("��������� �����")
-lb_Result = QLabel('���� �� ��� ���?') # ����� ����������� ������� "���������" ��� "�����������"
-lb_Correct = QLabel('����� ����� ���!') # ����� ����� ������� ����� ����������� ������
+# создаем панель результата
+AnsGroupBox = QGroupBox("Результат теста")
+lb_Result = QLabel('прав ты или нет?') # здесь размещается надпись "правильно" или "неправильно"
+lb_Correct = QLabel('ответ будет тут!') # здесь будет написан текст правильного ответа
  
 layout_res = QVBoxLayout()
 layout_res.addWidget(lb_Result, alignment=(Qt.AlignLeft | Qt.AlignTop))
 layout_res.addWidget(lb_Correct, alignment=Qt.AlignHCenter, stretch=2)
 AnsGroupBox.setLayout(layout_res)
  
-# ��������� ��� ������� � ����:
-layout_line1 = QHBoxLayout() # ������
-layout_line2 = QHBoxLayout() # �������� ������� ��� ��������� �����
-layout_line3 = QHBoxLayout() # ������ "��������"
+# размещаем все виджеты в окне
+layout_line1 = QHBoxLayout() # вопрос
+layout_line2 = QHBoxLayout() # варианты ответов или результат теста
+layout_line3 = QHBoxLayout() # кнопка "Ответить"
  
-layout_line1.addWidget(lb_Question, alignment=(Qt.AlignHCenter | Qt.AlignVCenter))
-# ��������� � ����� ������ ��� ������, ���� �� ��� ����� ����������, ������ ������������:
+layout_line1.addWidget(qlb, alignment=(Qt.AlignHCenter | Qt.AlignVCenter))
+# размещаем в одной строке обе панели, одна из них будет скрываться, другая показываться
 layout_line2.addWidget(RadioGroupBox)   
 layout_line2.addWidget(AnsGroupBox)  
 
- 
 layout_line3.addStretch(1)
-layout_line3.addWidget(btn_OK, stretch=2) # ������ ������ ���� �������
+layout_line3.addWidget(btn, stretch=2) # кнопка должна быть большой
 layout_line3.addStretch(1)
  
-# ������ ��������� ������ ��������� ���� ��� ������:
+# теперь созданные строки разместим друг под другой
 layout_card = QVBoxLayout()
  
 layout_card.addLayout(layout_line1, stretch=2)
+layout_card.addWidget(tlb, alignment=(Qt.AlignHCenter | Qt.AlignVCenter))
 layout_card.addLayout(layout_line2, stretch=8)
 layout_card.addStretch(1)
 layout_card.addLayout(layout_line3, stretch=1)
 layout_card.addStretch(1)
-layout_card.setSpacing(5) # ������� ����� ����������
+layout_card.setSpacing(5) # пробелы между содержимым
+
+win.setLayout(layout_card)
+
+def show_start():
+    RadioGroupBox.hide()
+    AnsGroupBox.hide()
+    qlb.setText('Добро пожаловать на тестирование по компьютерной грамотности!')
+    tlb.setText('Вам нужно будет ответить на 19 вопросов о компьютере и связанных с ним вещах. По окончанию теста вам будут предложены необходимые рекомендации по обучению компьютерной грамотности. Удачи!')
+    btn.setText('Начать')
 
 def show_result():
     RadioGroupBox.hide()
     AnsGroupBox.show()
-    btn_OK.setText('��������� ������')
+    btn.setText('Следующий вопрос')
 
 def show_question():
     RadioGroupBox.show()
     AnsGroupBox.hide()
+    tlb.hide()
     RadioGroup.setExclusive(False)
     rbtn_1.setChecked(False)
     rbtn_2.setChecked(False)
     rbtn_3.setChecked(False)
     rbtn_4.setChecked(False)
     RadioGroup.setExclusive(True)
+    btn.setText('Ответить')
 
 answers = [rbtn_1, rbtn_2, rbtn_3, rbtn_4]
 
@@ -109,7 +146,7 @@ def ask(q: Question):
     answers[1].setText(q.wrong1)
     answers[2].setText(q.wrong2)
     answers[3].setText(q.wrong3)
-    lb_Question.setText(q.question)
+    qlb.setText(q.question)
     lb_Correct.setText(q.right_answer)
     show_question()
 
@@ -118,57 +155,45 @@ def show_correct(res):
     show_result()
 
 def check_answer():
+    global score
     if answers[0].isChecked():
-        show_correct('���������!')
+        show_correct('Правильно!')
+        score += 1
     else:
         if answers[1].isChecked() or answers[2].isChecked() or answers[3].isChecked():
-            show_correct('�������!')
-
+            show_correct('Неверно!')
 
 
 def next_question():
-    window.cur_question = window.cur_question + 1
-    if window.cur_question >= len(questions_list):
-        window.cur_question = 0
-    q = questions_list[window.cur_question]
+    win.cur_question = win.cur_question + 1
+    q = q_list[win.cur_question]
     ask(q)
 
+def show_final():
+    RadioGroupBox.hide()
+    AnsGroupBox.hide()
+    tlb.show()
+    btn.hide()
+    qlb.setText('Поздравляем вас! Вы набрали ' + str(score) + ' баллов из 19!')
+    if score < 10:
+        tlb.setText('Не отчаивайтесь! Осознание проблемы есть ключ к её решению. Главное не опускать руки и стремиться к цели!\n\n\nОзнакомьтесь с данными материалами, они помогут Вам в изучении компьютера:\n\n\nhttps://neumeka.ru/ \n\nКнига: Компьютер и ноутбук для тех, кому за... Простой и понятный самоучитель. Марина Виннер')
+    elif score >= 10 and score <= 15:
+        tlb.setText('Неплохой результат! Конечно, можно лучше, но Вы определённо близки к освоению компьютера!\n\n\nОзнакомьтесь с данными материалами, они помогут Вам в изучении компьютера:\n\n\nhttps://neumeka.ru/ \n\nКнига: Компьютер и ноутбук для тех, кому за... Простой и понятный самоучитель. Марина Виннер')
+    elif score >= 16:
+        tlb.setText('Отличный результат! Чувствуется, что вы отлично освоили компьютер и стали грамотнее с ним работать. Поздравляю!\n\n\nОзнакомьтесь с данными материалами, они помогут Вам в изучении компьютера:\n\n\nhttps://neumeka.ru/ \n\nКнига: Компьютер и ноутбук для тех, кому за... Простой и понятный самоучитель. Марина Виннер')
+
 def click_OK():
-    if btn_OK == '��������':
+    if btn.text() == 'Ответить':
         check_answer()
-    else:
+    elif btn.text() == 'Следующий вопрос' or btn.text() == 'Начать':
         next_question()
+        if win.cur_question == 19:
+            show_final()
 
-window = QWidget()
-window.setLayout(layout_card)
-window.setWindowTitle('Memory Card')
+score = 0
+win.cur_question = -1
+show_start()
+btn.clicked.connect(click_OK)
 
-window.cur_question = -1
-
-btn_OK.clicked.connect(click_OK)
-next_question()
-window.resize(400, 300)
-window.show()
+win.show()
 app.exec_()
-
-q_list = []
-q_list.append()
-q_list.append()
-q_list.append()
-q_list.append()
-q_list.append()
-q_list.append()
-q_list.append()
-q_list.append()
-q_list.append()
-q_list.append()
-q_list.append()
-q_list.append()
-q_list.append()
-q_list.append()
-q_list.append()
-q_list.append()
-q_list.append()
-q_list.append()
-q_list.append()
-q_list.append()
